@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vigilant_vision/constants/color_constants.dart';
 import 'package:vigilant_vision/constants/screensize_constants.dart';
-import 'package:vigilant_vision/screens/alerts_screen.dart';
+import 'package:vigilant_vision/mainlayout.dart';
 import 'package:vigilant_vision/widgets/button/customButton.dart';
 import 'package:vigilant_vision/widgets/button/customTextButton.dart';
 import 'package:vigilant_vision/widgets/text/customText.dart';
@@ -185,7 +185,7 @@ class _LogInScreenState extends State<LogInScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => AlertsScreen()));
+                                    builder: (context) => MainLayout()));
                           }),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

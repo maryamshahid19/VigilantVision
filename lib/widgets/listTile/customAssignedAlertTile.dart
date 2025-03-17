@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:vigilant_vision/constants/color_constants.dart';
-import 'package:vigilant_vision/widgets/popup/alert_info_popup.dart';
+import 'package:vigilant_vision/widgets/button/customButton.dart';
+import 'package:vigilant_vision/widgets/popup/alert_generation_popup.dart';
 import 'package:vigilant_vision/widgets/text/customText.dart';
 
-class CustomAlertListTile extends StatelessWidget {
+class CustomAssignedAlertTile extends StatelessWidget {
   final String title;
   final String alertClass;
   final int peopleDetected;
@@ -21,8 +22,9 @@ class CustomAlertListTile extends StatelessWidget {
   final FontWeight? fontWeight;
   final Color borderColor;
   final double borderWidth;
+  final String buttonText;
 
-  const CustomAlertListTile({
+  const CustomAssignedAlertTile({
     super.key,
     required this.title,
     required this.alertClass,
@@ -31,6 +33,7 @@ class CustomAlertListTile extends StatelessWidget {
     required this.status,
     required this.statusColor,
     required this.onPressed,
+    required this.buttonText,
     this.color = ClrUtils.secondary,
     this.textColor = ClrUtils.textPrimary,
     this.borderRadius = 10.0,
@@ -43,17 +46,18 @@ class CustomAlertListTile extends StatelessWidget {
     this.borderWidth = 1,
   });
 
-  void showAlertInfoPopup(BuildContext context) {
+  void showEditButtonPopup(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertInfoPopup(
-            title: title,
-            alertClass: alertClass,
-            peopleDetected: peopleDetected,
-            action: action,
-            status: status,
-            statusColor: statusColor);
+        return AlertGenerationPopup(
+          title: "Edit Alert",
+          location: title,
+          alertClass: alertClass,
+          peopleDetected: peopleDetected,
+          action: action,
+          buttonText: "Done",
+        );
       },
     );
   }
@@ -61,7 +65,7 @@ class CustomAlertListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+      padding: const EdgeInsets.only(bottom: 16.0),
       child: Container(
         padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
         decoration: BoxDecoration(
@@ -136,38 +140,26 @@ class CustomAlertListTile extends StatelessWidget {
                 fontWeight: FontWeight.w400,
                 letterSpacing: 0.3,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomText(
-                    text: "Action: $action",
-                    color: ClrUtils.textFourth,
-                    fontWeight: FontWeight.w400,
-                    letterSpacing: 0.3,
-                  ),
-                  Container(
-                    height: 30,
-                    width: 32,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: ClrUtils.primary,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 8,
-                            offset: Offset(2, 2),
-                          ),
-                        ]),
-                    child: IconButton(
-                      onPressed: () {
-                        showAlertInfoPopup(context);
-                      },
-                      icon: Icon(Icons.arrow_forward_ios_rounded),
-                      iconSize: 15,
-                    ),
-                  ),
-                ],
+              CustomText(
+                text: "Action: $action",
+                color: ClrUtils.textFourth,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 0.3,
               ),
+              SizedBox(height: 15),
+
+              //used for assigned alerts screen
+              if (buttonText == "Completed" && status != "Resolved")
+                CustomButton(text: buttonText, onPressed: () {}),
+
+              //used for create alerts screen
+              if (buttonText == "Edit" && status != "Resolved")
+                CustomButton(
+                    text: buttonText,
+                    icon: "assets/icon/edit.png",
+                    onPressed: () {
+                      showEditButtonPopup(context);
+                    }),
             ],
           ),
         ),

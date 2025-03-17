@@ -13,8 +13,8 @@ class CustomTextField extends StatefulWidget {
   final Function(String)? onChanged;
   final String? Function(String?)? validator;
   final EdgeInsetsGeometry? contentPadding;
-  final bool isPassword; // To handle password visibility toggle
-  final Widget? prefixIcon; // To handle prefix icon
+  final bool isPassword;
+  final Widget? prefixIcon;
   final Widget? suffixIcon;
   final Color borderColor;
   final int? maxline;
@@ -24,7 +24,7 @@ class CustomTextField extends StatefulWidget {
   final Opacity? opacity;
 
   const CustomTextField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.hintText,
     this.obscureText = false,
@@ -35,7 +35,7 @@ class CustomTextField extends StatefulWidget {
     this.onChanged,
     this.validator,
     this.contentPadding,
-    this.isPassword = false, // Default is false
+    this.isPassword = false,
     this.prefixIcon,
     this.suffixIcon,
     this.fillColor = ClrUtils.primary,
@@ -44,7 +44,7 @@ class CustomTextField extends StatefulWidget {
     this.focusNode,
     this.style,
     this.opacity,
-  }) : super(key: key);
+  });
 
   @override
   _CustomTextFieldState createState() => _CustomTextFieldState();
@@ -89,10 +89,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     color: ClrUtils.textSecondary,
                     fontSize: 12,
                     fontWeight: FontWeight.normal),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: widget.borderColor),
-            ),
             contentPadding: widget.contentPadding ??
                 EdgeInsets.symmetric(vertical: 14, horizontal: 16),
             filled: true,
@@ -102,10 +98,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
               borderSide: BorderSide(color: ClrUtils.textTertiary),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: widget.borderColor),
-            ),
-            disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: widget.borderColor),
             ),
@@ -123,8 +115,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   )
                 : widget.suffixIcon != null
                     ? Padding(
-                        padding: const EdgeInsets.only(
-                            right: 8.0), // Add padding here
+                        padding: const EdgeInsets.only(right: 8.0),
                         child: widget.suffixIcon,
                       )
                     : null,

@@ -15,11 +15,10 @@ class CustomButton extends StatelessWidget {
   final FontWeight? fontWeight;
   final Color? borderColor;
   final double borderWidth;
-  //final Icon? icon;
   final String? icon;
 
   const CustomButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.onPressed,
     this.color = ClrUtils.secondary,
@@ -32,8 +31,8 @@ class CustomButton extends StatelessWidget {
     this.fontWeight,
     this.borderColor,
     this.borderWidth = 1,
-    this.icon = null,
-  }) : super(key: key);
+    this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +56,7 @@ class CustomButton extends StatelessWidget {
         children: [
           if (icon != null) ...[
             Image.asset(icon!, height: 24, width: 24),
-            SizedBox(width: 10),
+            SizedBox(width: 5),
           ],
           Text(
             text,
