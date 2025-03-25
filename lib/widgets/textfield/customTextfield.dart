@@ -3,7 +3,7 @@ import 'package:vigilant_vision/constants/color_constants.dart';
 import 'package:vigilant_vision/widgets/text/customText.dart';
 
 class CustomTextField extends StatefulWidget {
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final String hintText;
   final bool obscureText;
   final TextInputType keyboardType;
@@ -25,7 +25,7 @@ class CustomTextField extends StatefulWidget {
 
   const CustomTextField({
     super.key,
-    required this.controller,
+    this.controller,
     required this.hintText,
     this.obscureText = false,
     this.keyboardType = TextInputType.text,

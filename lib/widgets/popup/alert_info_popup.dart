@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vigilant_vision/constants/color_constants.dart';
 import 'package:vigilant_vision/constants/screensize_constants.dart';
 import 'package:vigilant_vision/widgets/button/customButton.dart';
+import 'package:vigilant_vision/widgets/popup/confirmation_popup.dart';
 import 'package:vigilant_vision/widgets/text/customText.dart';
 
 class AlertInfoPopup extends StatelessWidget {
@@ -21,6 +22,22 @@ class AlertInfoPopup extends StatelessWidget {
     required this.status,
     required this.statusColor,
   });
+
+  void showConfirmationPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ConfirmationPopup(
+            text1: "Are you sure?",
+            title: title,
+            alertClass: alertClass,
+            peopleDetected: peopleDetected,
+            action: action,
+            text2: "Cancel",
+            text3: "Confirm");
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -206,7 +223,11 @@ class AlertInfoPopup extends StatelessWidget {
             ),
             SizedBox(height: 15),
             if (status == "Pending")
-              CustomButton(text: "Volunteer", onPressed: () {}),
+              CustomButton(
+                  text: "Volunteer",
+                  onPressed: () {
+                    showConfirmationPopup(context);
+                  }),
           ],
         ),
       ),

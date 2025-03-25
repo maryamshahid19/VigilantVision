@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vigilant_vision/constants/color_constants.dart';
 import 'package:vigilant_vision/widgets/button/customButton.dart';
 import 'package:vigilant_vision/widgets/popup/alert_generation_popup.dart';
+import 'package:vigilant_vision/widgets/popup/confirmation_popup.dart';
 import 'package:vigilant_vision/widgets/text/customText.dart';
 
 class CustomAssignedAlertTile extends StatelessWidget {
@@ -57,6 +58,23 @@ class CustomAssignedAlertTile extends StatelessWidget {
           peopleDetected: peopleDetected,
           action: action,
           buttonText: "Done",
+        );
+      },
+    );
+  }
+
+  void showConfirmationPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ConfirmationPopup(
+          text1: "Task Completed?",
+          title: title,
+          alertClass: alertClass,
+          peopleDetected: peopleDetected,
+          action: action,
+          text2: "No",
+          text3: "Yes",
         );
       },
     );
@@ -150,7 +168,11 @@ class CustomAssignedAlertTile extends StatelessWidget {
 
               //used for assigned alerts screen
               if (buttonText == "Completed" && status != "Resolved")
-                CustomButton(text: buttonText, onPressed: () {}),
+                CustomButton(
+                    text: buttonText,
+                    onPressed: () {
+                      showConfirmationPopup(context);
+                    }),
 
               //used for create alerts screen
               if (buttonText == "Edit" && status != "Resolved")
