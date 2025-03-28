@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:vigilant_vision/mainlayout.dart';
-import 'package:vigilant_vision/screens/alerts_screen.dart';
-import 'package:vigilant_vision/screens/assigned_alerts_screen.dart';
-import 'package:vigilant_vision/screens/generate_alerts_screen.dart';
 import 'package:vigilant_vision/screens/login_screen.dart';
 import 'package:vigilant_vision/screens/signup_screen.dart';
 import 'package:vigilant_vision/screens/splash_screen.dart';
