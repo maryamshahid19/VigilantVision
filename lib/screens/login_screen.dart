@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vigilant_vision/constants/color_constants.dart';
 import 'package:vigilant_vision/constants/screensize_constants.dart';
 import 'package:vigilant_vision/mainlayout.dart';
+import 'package:vigilant_vision/screens/signup_screen.dart';
 import 'package:vigilant_vision/widgets/button/customButton.dart';
 import 'package:vigilant_vision/widgets/button/customTextButton.dart';
 import 'package:vigilant_vision/widgets/text/customText.dart';
@@ -195,7 +196,17 @@ class _LogInScreenState extends State<LogInScreen> {
                             color: ClrUtils.textSecondary,
                             fontSize: 12,
                           ),
-                          CustomTextButton(text: "Sign Up", onpressed: () {}),
+                          CustomTextButton(
+                            text: "Sign Up",
+                            onpressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SignUpScreen(),
+                                ),
+                              );
+                            },
+                          ),
                         ],
                       )
                     ],
