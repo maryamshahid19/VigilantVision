@@ -183,7 +183,7 @@ class _LogInScreenState extends State<LogInScreen> {
                       CustomButton(
                           text: "Login",
                           onPressed: () {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => MainLayout()));
