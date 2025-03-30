@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vigilant_vision/constants/color_constants.dart';
-import 'package:vigilant_vision/screens/login_screen.dart';
+import 'package:vigilant_vision/screens/signup_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -67,7 +67,7 @@ class _SplashScreenState extends State<SplashScreen>
             Future.delayed(const Duration(milliseconds: 800), () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const LogInScreen()),
+                MaterialPageRoute(builder: (context) => SignUpScreen()),
               );
             });
           });
