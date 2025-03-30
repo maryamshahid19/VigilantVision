@@ -36,6 +36,7 @@ class _AlertsScreenState extends State<AlertsScreen> {
                 status: alert["status"],
                 statusColor: alert["statusColor"],
                 onPressed: () {},
+                // width: SizeCons.getWidth(context) * 0.8,
               );
             },
             // },

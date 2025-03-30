@@ -139,11 +139,14 @@ class CustomAlertListTile extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CustomText(
-                    text: "Action: $action",
-                    color: ClrUtils.textFourth,
-                    fontWeight: FontWeight.w400,
-                    letterSpacing: 0.3,
+                  Flexible(
+                    child: CustomText(
+                      text: "Action: $action",
+                      color: ClrUtils.textFourth,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: 0.3,
+                      overflow: TextOverflow.visible,
+                    ),
                   ),
                   Container(
                     height: 30,
