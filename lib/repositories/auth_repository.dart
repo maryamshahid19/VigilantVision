@@ -35,7 +35,6 @@
 //   }
 // }
 
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,7 +44,8 @@ class AuthRepository {
   AuthRepository({FirebaseAuth? firebaseAuth})
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
 
-  Future<User?> signUp({required String email, required String password}) async {
+  Future<User?> signUp(
+      {required String email, required String password}) async {
     try {
       UserCredential userCredential =
           await _firebaseAuth.createUserWithEmailAndPassword(
@@ -87,5 +87,9 @@ class AuthRepository {
   Future<bool> isLoggedIn() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool('isLoggedIn') ?? false;
+  }
+
+  User? getCurrentUser() {
+    return _firebaseAuth.currentUser;
   }
 }
