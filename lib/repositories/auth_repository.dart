@@ -35,8 +35,10 @@
 //   }
 // }
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vigilant_vision/models/user.dart';
 
 class AuthRepository {
   final FirebaseAuth _firebaseAuth;
@@ -45,14 +47,36 @@ class AuthRepository {
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
 
   Future<User?> signUp(
-      {required String email, required String password}) async {
+      {required String email,
+      required String password,
+      required String fullName,
+      required String phoneNo}) async {
     try {
       UserCredential userCredential =
           await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return userCredential.user;
+
+      // added user other details in firestore because required to maintain profile and in app data
+      User? user = userCredential.user;
+
+      if (user != null) {
+        final snapshot =
+            await FirebaseFirestore.instance.collection('user').get();
+
+        final newVolID =
+            'VOL${(snapshot.docs.length + 1).toString().padLeft(3, '0')}';
+
+        await FirebaseFirestore.instance.collection('user').doc(user.uid).set({
+          'email': email,
+          'fullName': fullName,
+          'phoneNo': phoneNo,
+          'volID': newVolID,
+        });
+      }
+
+      return user;
     } catch (e) {
       throw Exception(e.toString());
     }
@@ -89,7 +113,15 @@ class AuthRepository {
     return prefs.getBool('isLoggedIn') ?? false;
   }
 
-  User? getCurrentUser() {
-    return _firebaseAuth.currentUser;
+  Future<UserModel> getCurrentUser() async {
+    User? user = _firebaseAuth.currentUser;
+    final snapshot = await FirebaseFirestore.instance
+        .collection('user')
+        .doc(user?.uid)
+        .get();
+
+    final userDetails = UserModel.fromSnapshot(snapshot);
+  
+    return userDetails;
   }
 }

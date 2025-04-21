@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:vigilant_vision/constants/color_constants.dart';
 import 'package:vigilant_vision/constants/screensize_constants.dart';
+import 'package:vigilant_vision/models/alert.dart';
+import 'package:vigilant_vision/repositories/alert_repository.dart';
 import 'package:vigilant_vision/widgets/button/customButton.dart';
 import 'package:vigilant_vision/widgets/popup/confirmation_popup.dart';
 import 'package:vigilant_vision/widgets/text/customText.dart';
 
 class AlertInfoPopup extends StatelessWidget {
-  final String title;
-  final String alertClass;
-  final int peopleDetected;
-  final String action;
-  final String status;
+  Alert alert;
+  // final String title;
+  // final String alertClass;
+  // final int peopleDetected;
+  // final String action;
+  // String status;
   final Color statusColor;
 
-  const AlertInfoPopup({
+  AlertInfoPopup({
     super.key,
-    required this.title,
-    required this.alertClass,
-    required this.peopleDetected,
-    required this.action,
-    required this.status,
+    required this.alert,
+    // required this.title,
+    // required this.alertClass,
+    // required this.peopleDetected,
+    // required this.action,
+    // required this.status,
     required this.statusColor,
   });
 
@@ -29,10 +33,11 @@ class AlertInfoPopup extends StatelessWidget {
       builder: (BuildContext context) {
         return ConfirmationPopup(
             text1: "Are you sure?",
-            title: title,
-            alertClass: alertClass,
-            peopleDetected: peopleDetected,
-            action: action,
+            alert: alert,
+            // title: alert.locationName,
+            // alertClass: alert.alertType,
+            // peopleDetected: alert.detectedValue,
+            // action: "take an action",
             text2: "Cancel",
             text3: "Confirm");
       },
@@ -161,7 +166,7 @@ class AlertInfoPopup extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                      text: title,
+                      text: alert.locationName,
                       fontWeight: FontWeight.w800,
                       fontSize: 16,
                       letterSpacing: 0.3,
@@ -178,7 +183,7 @@ class AlertInfoPopup extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: alertClass,
+                            text: alert.alertType,
                             style: TextStyle(
                               color: ClrUtils.textTertiary,
                               fontWeight: FontWeight.w400,
@@ -200,7 +205,7 @@ class AlertInfoPopup extends StatelessWidget {
                   ),
                   child: Center(
                     child: CustomText(
-                      text: status,
+                      text: alert.status,
                       fontWeight: FontWeight.w500,
                       color: statusColor,
                     ),
@@ -210,23 +215,27 @@ class AlertInfoPopup extends StatelessWidget {
             ),
             SizedBox(height: 20),
             CustomText(
-              text: "People Detected: $peopleDetected",
+              text: "People Detected: $alert.detectedValue",
               color: ClrUtils.textFourth,
               fontWeight: FontWeight.w400,
               letterSpacing: 0.3,
             ),
             CustomText(
-              text: "Action: $action",
+              text: "Action: Take and action",
               color: ClrUtils.textFourth,
               fontWeight: FontWeight.w400,
               letterSpacing: 0.3,
             ),
             SizedBox(height: 15),
-            if (status == "Pending")
+            if (alert.status == "pending")
               CustomButton(
                   text: "Volunteer",
-                  onPressed: () {
+                  onPressed: () async {
                     showConfirmationPopup(context);
+
+                    //setState() {
+                    //  alert.status = "assigned";
+                    // }
                   }),
           ],
         ),

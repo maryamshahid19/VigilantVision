@@ -78,16 +78,16 @@ class _GenerateAlertsScreenState extends State<GenerateAlertsScreen> {
                     itemBuilder: (context, index) {
                       final alert = AlertsData.alerts[index];
 
-                      return CustomAssignedAlertTile(
-                        title: alert["title"],
-                        alertClass: alert["alertClass"],
-                        peopleDetected: alert["peopleDetected"],
-                        action: alert["action"],
-                        status: alert["status"],
-                        statusColor: alert["statusColor"],
-                        buttonText: "Edit",
-                        onPressed: () {},
-                      );
+                      // return CustomAssignedAlertTile(
+                      //   title: alert["title"],
+                      //   alertClass: alert["alertClass"],
+                      //   peopleDetected: alert["peopleDetected"],
+                      //   action: alert["action"],
+                      //   status: alert["status"],
+                      //   statusColor: alert["statusColor"],
+                      //   buttonText: "Edit",
+                      //   onPressed: () {},
+                      // );
                     },
                   ),
                 ),

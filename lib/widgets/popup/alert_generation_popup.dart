@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vigilant_vision/constants/color_constants.dart';
 import 'package:vigilant_vision/constants/screensize_constants.dart';
+import 'package:vigilant_vision/models/alert.dart';
 import 'package:vigilant_vision/widgets/button/customButton.dart';
 import 'package:vigilant_vision/widgets/text/customText.dart';
 import 'package:vigilant_vision/widgets/textfield/customTextfield.dart';
@@ -8,6 +9,7 @@ import 'package:vigilant_vision/widgets/textfield/customTextfield.dart';
 class AlertGenerationPopup extends StatefulWidget {
   const AlertGenerationPopup(
       {super.key,
+      //required this.alert,
       required this.title,
       this.location,
       this.alertClass,
@@ -15,6 +17,7 @@ class AlertGenerationPopup extends StatefulWidget {
       this.action,
       required this.buttonText});
 
+  //final Alert? alert;
   final String title;
   final String? location;
   final String? alertClass;

@@ -4,23 +4,37 @@ import 'package:vigilant_vision/bloc/auth_bloc.dart';
 import 'package:vigilant_vision/bloc/auth_state.dart';
 import 'package:vigilant_vision/constants/color_constants.dart';
 import 'package:vigilant_vision/constants/screensize_constants.dart';
+import 'package:vigilant_vision/models/user.dart';
+import 'package:vigilant_vision/repositories/auth_repository.dart';
 import 'package:vigilant_vision/widgets/text/customText.dart';
-import 'package:vigilant_vision/widgets/textfield/customTextfield.dart';
+//import 'package:vigilant_vision/widgets/textfield/customTextfield.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  late UserModel? user;
+  @override
+  void initState() {
+    super.initState();
+    fetchCurrentUser();
+  }
+
+  void fetchCurrentUser() async {
+    user = await AuthRepository().getCurrentUser();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        String userName = "Loading...";
-        String email = "";
-
         if (state is AuthAuthenticated) {
-          final user = context.read<AuthBloc>().authRepository.getCurrentUser();
-          userName = user?.displayName ?? "No Name";
-          email = user?.email ?? "No Email";
+          //final user = context.read<AuthBloc>().authRepository.getCurrentUser();
         }
         return Scaffold(
           backgroundColor: ClrUtils.primary,
@@ -67,9 +81,8 @@ class ProfileScreen extends StatelessWidget {
                     //   ],
                     // ),
                     const SizedBox(height: 10),
-
                     CustomText(
-                      text: email,
+                      text: user!.fullName,
                       color: Colors.white,
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
@@ -143,7 +156,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                       ),
                       child: CustomText(
-                        text: "Maryam Shahid",
+                        text: user!.fullName,
                         color: ClrUtils.textFifth,
                         fontWeight: FontWeight.w500,
                         letterSpacing: 0.3,
@@ -171,7 +184,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                       ),
                       child: CustomText(
-                        text: "maryam21@gmail.com",
+                        text: user!.email,
                         color: ClrUtils.textFifth,
                         fontWeight: FontWeight.w500,
                         letterSpacing: 0.3,
@@ -199,7 +212,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                       ),
                       child: CustomText(
-                        text: "+92 308 0304965",
+                        text: user!.phoneNo,
                         color: ClrUtils.textFifth,
                         fontWeight: FontWeight.w500,
                         letterSpacing: 0.3,
@@ -227,7 +240,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                       ),
                       child: CustomText(
-                        text: "#VOL001",
+                        text: user!.volID,
                         color: ClrUtils.textFifth,
                         fontWeight: FontWeight.w500,
                         letterSpacing: 0.3,

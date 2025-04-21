@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:vigilant_vision/constants/color_constants.dart';
+import 'package:vigilant_vision/models/alert.dart';
 import 'package:vigilant_vision/widgets/button/customButton.dart';
 import 'package:vigilant_vision/widgets/popup/alert_generation_popup.dart';
 import 'package:vigilant_vision/widgets/popup/confirmation_popup.dart';
 import 'package:vigilant_vision/widgets/text/customText.dart';
 
 class CustomAssignedAlertTile extends StatelessWidget {
-  final String title;
-  final String alertClass;
-  final int peopleDetected;
-  final String action;
-  final String status;
+  final Alert alert;
+  // final String title;
+  // final String alertClass;
+  // final int peopleDetected;
+  // final String action;
+  // final String status;
   final Color statusColor;
   final VoidCallback onPressed;
   final Color color;
@@ -25,13 +27,14 @@ class CustomAssignedAlertTile extends StatelessWidget {
   final double borderWidth;
   final String buttonText;
 
-  const CustomAssignedAlertTile({
+  CustomAssignedAlertTile({
     super.key,
-    required this.title,
-    required this.alertClass,
-    required this.peopleDetected,
-    required this.action,
-    required this.status,
+    required this.alert,
+    // required this.title,
+    // required this.alertClass,
+    // required this.peopleDetected,
+    // required this.action,
+    // required this.status,
     required this.statusColor,
     required this.onPressed,
     required this.buttonText,
@@ -53,10 +56,11 @@ class CustomAssignedAlertTile extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertGenerationPopup(
           title: "Edit Alert",
-          location: title,
-          alertClass: alertClass,
-          peopleDetected: peopleDetected,
-          action: action,
+          //alert : alert,
+          location: alert.locationName,
+          alertClass: alert.alertType,
+          peopleDetected: alert.detectedValue,
+          action: "Take an action",
           buttonText: "Done",
         );
       },
@@ -69,10 +73,11 @@ class CustomAssignedAlertTile extends StatelessWidget {
       builder: (BuildContext context) {
         return ConfirmationPopup(
           text1: "Task Completed?",
-          title: title,
-          alertClass: alertClass,
-          peopleDetected: peopleDetected,
-          action: action,
+          alert: alert,
+          // title: title,
+          // alertClass: alertClass,
+          // peopleDetected: peopleDetected,
+          // action: action,
           text2: "No",
           text3: "Yes",
         );
@@ -104,7 +109,7 @@ class CustomAssignedAlertTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: title,
+                        text: alert.locationName,
                         fontWeight: FontWeight.w800,
                         fontSize: 16,
                         letterSpacing: 0.3,
@@ -121,7 +126,7 @@ class CustomAssignedAlertTile extends StatelessWidget {
                           ),
                           children: [
                             TextSpan(
-                              text: alertClass,
+                              text: alert.alertType,
                               style: TextStyle(
                                 color: ClrUtils.textTertiary,
                                 fontWeight: FontWeight.w400,
@@ -143,7 +148,7 @@ class CustomAssignedAlertTile extends StatelessWidget {
                     ),
                     child: Center(
                       child: CustomText(
-                        text: status,
+                        text: alert.status,
                         fontWeight: FontWeight.w500,
                         color: statusColor,
                       ),
@@ -153,13 +158,13 @@ class CustomAssignedAlertTile extends StatelessWidget {
               ),
               SizedBox(height: 30),
               CustomText(
-                text: "People Detected: $peopleDetected",
+                text: "People Detected: ${alert.detectedValue}",
                 color: ClrUtils.textFourth,
                 fontWeight: FontWeight.w400,
                 letterSpacing: 0.3,
               ),
               CustomText(
-                text: "Action: $action",
+                text: "Action: take an action",
                 color: ClrUtils.textFourth,
                 fontWeight: FontWeight.w400,
                 letterSpacing: 0.3,
@@ -167,7 +172,7 @@ class CustomAssignedAlertTile extends StatelessWidget {
               SizedBox(height: 15),
 
               //used for assigned alerts screen
-              if (buttonText == "Completed" && status != "Resolved")
+              if (buttonText == "Completed" && alert.status != "resolved")
                 CustomButton(
                     text: buttonText,
                     onPressed: () {
@@ -175,7 +180,7 @@ class CustomAssignedAlertTile extends StatelessWidget {
                     }),
 
               //used for create alerts screen
-              if (buttonText == "Edit" && status != "Resolved")
+              if (buttonText == "Edit" && alert.status != "resolved")
                 CustomButton(
                     text: buttonText,
                     icon: "assets/icon/edit.png",

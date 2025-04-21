@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:vigilant_vision/constants/color_constants.dart';
+import 'package:vigilant_vision/models/alert.dart';
 import 'package:vigilant_vision/widgets/popup/alert_info_popup.dart';
 import 'package:vigilant_vision/widgets/text/customText.dart';
 
 class CustomAlertListTile extends StatelessWidget {
-  final String title;
-  final String alertClass;
-  final int peopleDetected;
-  final String action;
-  final String status;
+  final Alert alert;
+  // final String title;
+  // final String alertClass;
+  // final int peopleDetected;
+  // final String action;
+  // final String status;
   final Color statusColor;
   final VoidCallback onPressed;
   final Color color;
@@ -24,11 +26,12 @@ class CustomAlertListTile extends StatelessWidget {
 
   const CustomAlertListTile({
     super.key,
-    required this.title,
-    required this.alertClass,
-    required this.peopleDetected,
-    required this.action,
-    required this.status,
+    required this.alert,
+    // required this.title,
+    // required this.alertClass,
+    // required this.peopleDetected,
+    // required this.action,
+    // required this.status,
     required this.statusColor,
     required this.onPressed,
     this.color = ClrUtils.secondary,
@@ -48,11 +51,12 @@ class CustomAlertListTile extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertInfoPopup(
-            title: title,
-            alertClass: alertClass,
-            peopleDetected: peopleDetected,
-            action: action,
-            status: status,
+            alert: alert,
+            // title: title,
+            // alertClass: alertClass,
+            // peopleDetected: peopleDetected,
+            // action: action,
+            // status: status,
             statusColor: statusColor);
       },
     );
@@ -82,7 +86,7 @@ class CustomAlertListTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: title,
+                        text: alert.locationName,
                         fontWeight: FontWeight.w800,
                         fontSize: 16,
                         letterSpacing: 0.3,
@@ -99,7 +103,7 @@ class CustomAlertListTile extends StatelessWidget {
                           ),
                           children: [
                             TextSpan(
-                              text: alertClass,
+                              text: alert.alertType,
                               style: TextStyle(
                                 color: ClrUtils.textTertiary,
                                 fontWeight: FontWeight.w400,
@@ -121,7 +125,7 @@ class CustomAlertListTile extends StatelessWidget {
                     ),
                     child: Center(
                       child: CustomText(
-                        text: status,
+                        text: alert.status,
                         fontWeight: FontWeight.w500,
                         color: statusColor,
                       ),
@@ -131,7 +135,7 @@ class CustomAlertListTile extends StatelessWidget {
               ),
               SizedBox(height: 30),
               CustomText(
-                text: "People Detected: $peopleDetected",
+                text: "People Detected: ${alert.detectedValue}",
                 color: ClrUtils.textFourth,
                 fontWeight: FontWeight.w400,
                 letterSpacing: 0.3,
@@ -141,7 +145,7 @@ class CustomAlertListTile extends StatelessWidget {
                 children: [
                   Flexible(
                     child: CustomText(
-                      text: "Action: $action",
+                      text: "Action: take an action",
                       color: ClrUtils.textFourth,
                       fontWeight: FontWeight.w400,
                       letterSpacing: 0.3,

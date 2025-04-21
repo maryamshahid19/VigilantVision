@@ -272,6 +272,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final nameController = TextEditingController();
+  final phoneController = TextEditingController();
 
   bool val = true;
 
@@ -374,7 +375,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             CustomTextButton(
                               text: "Log In",
                               onpressed: () {
-                                Navigator.pushReplacement(
+                                Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => LogInScreen(),
@@ -421,6 +422,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           isPassword: true,
                           maxline: 1,
                         ),
+                        CustomText(
+                          text: "Phone No",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        CustomTextField(
+                          controller: phoneController,
+                          hintText: "0308768456",
+                          maxline: 1,
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -448,13 +459,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         CustomButton(
                           text: "SignUp",
                           onPressed: () {
+                            String phone = phoneController.text.trim();
+
+                            if (phone.length != 11 ||
+                                !RegExp(r'^03[0-9]{9}$').hasMatch(phone)) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text(
+                                          "Enter a valid 11 digit number")));
+                              return;
+                            }
+
                             context.read<AuthBloc>().add(
                                   SignUpRequested(
                                     email: emailController.text.trim(),
                                     password: passwordController.text.trim(),
                                     name: nameController.text.trim(),
+                                    phoneNo: phoneController.text.trim(),
                                   ),
                                 );
+
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LogInScreen(),
+                              ),
+                            );
                           },
                         ),
                         Container(
@@ -490,24 +520,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ],
                           ),
                         ),
-                        CustomButton(
-                          text: 'Continue with Google',
-                          onPressed: () {},
-                          borderColor: ClrUtils.border,
-                          fontWeight: FontWeight.w600,
-                          color: ClrUtils.primary,
-                          textColor: ClrUtils.textPrimary,
-                          icon: "assets/icon/google.png",
-                        ),
-                        CustomButton(
-                          text: 'Continue with Facebook',
-                          onPressed: () {},
-                          borderColor: ClrUtils.border,
-                          fontWeight: FontWeight.w600,
-                          color: ClrUtils.primary,
-                          textColor: ClrUtils.textPrimary,
-                          icon: "assets/icon/facebook.png",
-                        ),
+                        // CustomButton(
+                        //   text: 'Continue with Google',
+                        //   onPressed: () {},
+                        //   borderColor: ClrUtils.border,
+                        //   fontWeight: FontWeight.w600,
+                        //   color: ClrUtils.primary,
+                        //   textColor: ClrUtils.textPrimary,
+                        //   icon: "assets/icon/google.png",
+                        // ),
                       ],
                     ),
                   ),
