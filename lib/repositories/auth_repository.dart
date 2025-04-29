@@ -1,40 +1,3 @@
-// import 'package:firebase_auth/firebase_auth.dart';
-
-// class AuthRepository {
-//   final FirebaseAuth _firebaseAuth;
-
-//   AuthRepository({FirebaseAuth? firebaseAuth})
-//       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
-
-//   Future<User?> signUp({required String email, required String password}) async {
-//     try {
-//       UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
-//         email: email,
-//         password: password,
-//       );
-//       return userCredential.user;
-//     } catch (e) {
-//       throw Exception(e.toString());
-//     }
-//   }
-
-//   Future<User?> logIn({required String email, required String password}) async {
-//     try {
-//       UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(
-//         email: email,
-//         password: password,
-//       );
-//       return userCredential.user;
-//     } catch (e) {
-//       throw Exception(e.toString());
-//     }
-//   }
-
-//   Future<void> logOut() async {
-//     await _firebaseAuth.signOut();
-//   }
-// }
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -121,7 +84,7 @@ class AuthRepository {
         .get();
 
     final userDetails = UserModel.fromSnapshot(snapshot);
-  
+
     return userDetails;
   }
 }

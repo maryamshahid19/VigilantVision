@@ -31,11 +31,11 @@ class MyApp extends StatelessWidget {
         title: 'Vigilant Vision',
         home: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
-            //if (state is AuthAuthenticated) {
-            //  return const SignUpScreen(); // Navigate to home if authenticated
-            //} else {
-            return const LogInScreen(); // Otherwise, show login screen
-            // }
+            if (state is AuthAuthenticated) {
+              return const SignUpScreen(); // Navigate to home if authenticated
+            } else {
+              return const SignUpScreen(); // Otherwise, show login screen
+            }
           },
         ),
         routes: {

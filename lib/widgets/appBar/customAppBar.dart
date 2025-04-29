@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:vigilant_vision/constants/color_constants.dart';
 import 'package:vigilant_vision/constants/screensize_constants.dart';
+import 'package:vigilant_vision/models/user.dart';
 import 'package:vigilant_vision/widgets/text/customText.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({required this.title, super.key});
+  CustomAppBar(
+      {required this.title,
+      required this.user,
+      required this.onProfileTap,
+      super.key});
 
   final String title;
+  VoidCallback onProfileTap;
+  late UserModel user;
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
@@ -34,12 +41,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         Padding(
           padding: EdgeInsets.only(right: SizeCons.getWidth(context) * 0.05),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: Image.asset(
-              "assets/icon/pic.PNG",
-              height: 28,
-              width: 28,
+          child: GestureDetector(
+            onTap: onProfileTap,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(100),
+              child: Image.asset(
+                "assets/icon/profile.PNG",
+                height: 28,
+                width: 28,
+              ),
             ),
           ),
         ),

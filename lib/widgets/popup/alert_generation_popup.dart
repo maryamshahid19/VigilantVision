@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vigilant_vision/constants/color_constants.dart';
 import 'package:vigilant_vision/constants/screensize_constants.dart';
 import 'package:vigilant_vision/models/alert.dart';
+import 'package:vigilant_vision/repositories/alert_repository.dart';
 import 'package:vigilant_vision/widgets/button/customButton.dart';
 import 'package:vigilant_vision/widgets/text/customText.dart';
 import 'package:vigilant_vision/widgets/textfield/customTextfield.dart';
@@ -10,6 +11,7 @@ class AlertGenerationPopup extends StatefulWidget {
   const AlertGenerationPopup(
       {super.key,
       //required this.alert,
+      required this.volId,
       required this.title,
       this.location,
       this.alertClass,
@@ -18,6 +20,7 @@ class AlertGenerationPopup extends StatefulWidget {
       required this.buttonText});
 
   //final Alert? alert;
+  final String volId;
   final String title;
   final String? location;
   final String? alertClass;
@@ -53,20 +56,36 @@ class _AlertGenerationPopupState extends State<AlertGenerationPopup> {
   void initState() {
     super.initState();
 
-    if (widget.location != null && locationOptions.contains(widget.location)) {
-      selectedLocation = widget.location;
-      isCustomLocation = false;
-    } else {
-      selectedLocation = "Other"; // Force "Other" selection
-      isCustomLocation = true;
-      customLocationController.text =
-          widget.location ?? ""; // Store custom location
-    }
+    // if (widget.location != null &&
+    //     //if (
+    //     locationOptions.contains(widget.location)) {
+    //   selectedLocation = widget.location;
+    //   isCustomLocation = false;
+    // } else {
+    //   selectedLocation = "Other";
+    //  isCustomLocation = true;
+    //   customLocationController.text =
+    //       widget.location ?? ""; // Store custom location
+    // }
 
-    selectedClass = widget.alertClass;
-    peopleDetectedController =
-        TextEditingController(text: widget.peopleDetected?.toString() ?? "");
-    alertActionController = TextEditingController(text: widget.action ?? "");
+    // selectedClass = widget.alertClass;
+    // peopleDetectedController =
+    //     TextEditingController(text: widget.peopleDetected?.toString() ?? "");
+    // alertActionController = TextEditingController(text: widget.action ?? "");
+
+    if (widget.location != null) {
+      if (locationOptions.contains(widget.location)) {
+        selectedLocation = widget.location;
+        isCustomLocation = widget.location == "Other";
+      } else {
+        selectedLocation = null;
+        isCustomLocation = false;
+        customLocationController.text = widget.location!;
+      }
+    } else {
+      selectedLocation = null;
+      isCustomLocation = false;
+    }
   }
 
   @override
@@ -90,11 +109,11 @@ class _AlertGenerationPopupState extends State<AlertGenerationPopup> {
               children: [
                 CustomText(
                   text: widget.title,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w700,
                   fontSize: 18,
                   color: ClrUtils.textFifth,
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 CustomText(
                   text: "Alert Location",
                   fontWeight: FontWeight.w500,
@@ -102,6 +121,7 @@ class _AlertGenerationPopupState extends State<AlertGenerationPopup> {
                 ),
                 DropdownButtonFormField<String>(
                   value: selectedLocation,
+                  dropdownColor: ClrUtils.background,
                   items: locationOptions.map((location) {
                     return DropdownMenuItem(
                       value: location,
@@ -128,7 +148,7 @@ class _AlertGenerationPopupState extends State<AlertGenerationPopup> {
                       value == null ? "Please select a location" : null,
                 ),
                 if (isCustomLocation) ...[
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 15),
                   CustomTextField(
                     controller: customLocationController,
                     hintText: "Enter custom location...",
@@ -141,7 +161,7 @@ class _AlertGenerationPopupState extends State<AlertGenerationPopup> {
                     },
                   ),
                 ],
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 CustomText(
                   text: "Alert Class",
                   fontWeight: FontWeight.w500,
@@ -173,7 +193,7 @@ class _AlertGenerationPopupState extends State<AlertGenerationPopup> {
                   validator: (value) =>
                       value == null ? "Please select an alert class" : null,
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 CustomText(
                   text: "People Detected",
                   fontWeight: FontWeight.w500,
@@ -184,7 +204,7 @@ class _AlertGenerationPopupState extends State<AlertGenerationPopup> {
                   hintText: "Enter number...",
                   keyboardType: TextInputType.number,
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 CustomText(
                   text: "Action",
                   fontWeight: FontWeight.w500,
@@ -197,7 +217,7 @@ class _AlertGenerationPopupState extends State<AlertGenerationPopup> {
                       ? "Action is required"
                       : null,
                 ),
-                const SizedBox(height: 22),
+                const SizedBox(height: 25),
                 CustomButton(
                     text: widget.buttonText,
                     onPressed: () {
@@ -206,14 +226,20 @@ class _AlertGenerationPopupState extends State<AlertGenerationPopup> {
                             ? customLocationController.text
                             : selectedLocation ?? "Unknown";
                         String alertClass = selectedClass ?? "General";
-                        String peopleCount =
-                            peopleDetectedController.text.isNotEmpty
-                                ? peopleDetectedController.text
-                                : "0";
+                        int peopleCount = peopleDetectedController
+                                .text.isNotEmpty
+                            ? int.tryParse(peopleDetectedController.text) ?? 0
+                            : 0;
+
                         String action = alertActionController.text;
+
+                        AlertRepository().generateAlert(location, alertClass,
+                            peopleCount, action, widget.volId);
 
                         print(
                             "Alert Generated:\nLocation: $location\nClass: $alertClass\nPeople: $peopleCount\nAction: $action");
+
+                        Navigator.of(context).pop();
                       }
                     }),
               ],

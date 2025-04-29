@@ -2,22 +2,24 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Alert {
   String alertType;
-  String cameraId;
+  String source;
   int detectedValue;
   String locationName;
   String status;
-  //final String action;
-  //final String timestamp;
+  String? assignedTo;
+  String action;
+  Timestamp timestamp;
   String documentId;
 
   Alert({
     required this.alertType,
-    required this.cameraId,
+    required this.source,
     required this.detectedValue,
     required this.locationName,
     required this.status,
-    //required this.action,
-    // required this.timestamp,
+    required this.assignedTo,
+    required this.action,
+    required this.timestamp,
     required this.documentId,
   });
 
@@ -26,12 +28,13 @@ class Alert {
 
     return Alert(
       alertType: data['alert_type'] ?? '',
-      cameraId: data['camera_id'] ?? '',
+      source: data['camera_id'] ?? '',
       detectedValue: data['detected_value'] ?? 0,
       locationName: data['location_name'] ?? '',
       status: data['status'] ?? '',
-      // action: data['action'] ?? '',
-      //timestamp: data['timestamp'] ?? '',
+      assignedTo: data['assigned_to'] ?? '',
+      action: data['action'] ?? '',
+      timestamp: data['timestamp'] ?? '',
       documentId: document.id,
     );
   }

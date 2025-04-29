@@ -2,7 +2,9 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:vigilant_vision/constants/color_constants.dart';
 import 'package:vigilant_vision/constants/screensize_constants.dart';
-import 'package:vigilant_vision/data/alerts_data.dart';
+import 'package:vigilant_vision/models/alert.dart';
+import 'package:vigilant_vision/models/user.dart';
+import 'package:vigilant_vision/repositories/alert_repository.dart';
 import 'package:vigilant_vision/widgets/appBar/customAppBar.dart';
 import 'package:vigilant_vision/widgets/button/customButton.dart';
 import 'package:vigilant_vision/widgets/listTile/customAssignedAlertTile.dart';
@@ -10,13 +12,29 @@ import 'package:vigilant_vision/widgets/popup/alert_generation_popup.dart';
 import 'package:vigilant_vision/widgets/text/customText.dart';
 
 class GenerateAlertsScreen extends StatefulWidget {
-  const GenerateAlertsScreen({super.key});
+  GenerateAlertsScreen(
+      {super.key,
+      required this.volId,
+      required this.user,
+      required this.onProfileTap});
+
+  final String volId;
+  late UserModel user;
+  final VoidCallback onProfileTap;
 
   @override
   State<GenerateAlertsScreen> createState() => _GenerateAlertsScreenState();
 }
 
 class _GenerateAlertsScreenState extends State<GenerateAlertsScreen> {
+  late Future<List<Alert>> _alertsFuture;
+
+  Future<void> _refreshAlerts() async {
+    setState(() {
+      _alertsFuture = AlertRepository().fetchAllAlerts();
+    });
+  }
+
   void showGenerateAlertPopup(BuildContext context) {
     showDialog(
       context: context,
@@ -24,6 +42,7 @@ class _GenerateAlertsScreenState extends State<GenerateAlertsScreen> {
         return AlertGenerationPopup(
           title: "Generate Alert",
           buttonText: "Generate",
+          volId: widget.volId,
         );
       },
     );
@@ -32,7 +51,11 @@ class _GenerateAlertsScreenState extends State<GenerateAlertsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: "Generate Alerts"),
+      appBar: CustomAppBar(
+        title: "Generate Alerts",
+        user: widget.user,
+        onProfileTap: widget.onProfileTap,
+      ),
       backgroundColor: ClrUtils.primary,
       body: Center(
         child: Container(
@@ -73,22 +96,53 @@ class _GenerateAlertsScreenState extends State<GenerateAlertsScreen> {
               SizedBox(height: 10),
               Expanded(
                 child: Container(
-                  child: ListView.builder(
-                    itemCount: AlertsData.alerts.length,
-                    itemBuilder: (context, index) {
-                      final alert = AlertsData.alerts[index];
+                  child: Expanded(
+                    child: RefreshIndicator(
+                      onRefresh: _refreshAlerts,
+                      child: FutureBuilder<List<Alert>>(
+                        future: AlertRepository()
+                            .fetchGeneratedAlerts(widget.volId),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
 
-                      // return CustomAssignedAlertTile(
-                      //   title: alert["title"],
-                      //   alertClass: alert["alertClass"],
-                      //   peopleDetected: alert["peopleDetected"],
-                      //   action: alert["action"],
-                      //   status: alert["status"],
-                      //   statusColor: alert["statusColor"],
-                      //   buttonText: "Edit",
-                      //   onPressed: () {},
-                      // );
-                    },
+                          if (snapshot.hasError) {
+                            return Center(
+                                child: Text("Error: ${snapshot.error}"));
+                          }
+
+                          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                            return const Center(
+                                child: Text('No alerts generated yet.'));
+                          }
+
+                          List<Alert> alerts = snapshot.data!;
+
+                          return ListView.builder(
+                            itemCount: alerts.length,
+                            itemBuilder: (context, index) {
+                              final alert = alerts[index];
+
+                              return CustomAssignedAlertTile(
+                                alert: alert,
+                                volId: widget.volId,
+                                statusColor: alert.status == 'pending'
+                                    ? const Color.fromARGB(255, 240, 212, 2)
+                                    : (alert.status == 'assigned'
+                                        ? ClrUtils.tertiary
+                                        : const Color.fromARGB(
+                                            255, 22, 225, 29)),
+                                buttonText: "Edit",
+                                onPressed: () {},
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
                   ),
                 ),
               ),

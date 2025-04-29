@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:vigilant_vision/constants/color_constants.dart';
 import 'package:vigilant_vision/models/alert.dart';
 import 'package:vigilant_vision/widgets/popup/alert_info_popup.dart';
@@ -6,11 +7,7 @@ import 'package:vigilant_vision/widgets/text/customText.dart';
 
 class CustomAlertListTile extends StatelessWidget {
   final Alert alert;
-  // final String title;
-  // final String alertClass;
-  // final int peopleDetected;
-  // final String action;
-  // final String status;
+  final String volId;
   final Color statusColor;
   final VoidCallback onPressed;
   final Color color;
@@ -27,11 +24,7 @@ class CustomAlertListTile extends StatelessWidget {
   const CustomAlertListTile({
     super.key,
     required this.alert,
-    // required this.title,
-    // required this.alertClass,
-    // required this.peopleDetected,
-    // required this.action,
-    // required this.status,
+    required this.volId,
     required this.statusColor,
     required this.onPressed,
     this.color = ClrUtils.secondary,
@@ -51,13 +44,10 @@ class CustomAlertListTile extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertInfoPopup(
-            alert: alert,
-            // title: title,
-            // alertClass: alertClass,
-            // peopleDetected: peopleDetected,
-            // action: action,
-            // status: status,
-            statusColor: statusColor);
+          alert: alert,
+          volId: volId,
+          statusColor: statusColor,
+        );
       },
     );
   }
@@ -135,20 +125,30 @@ class CustomAlertListTile extends StatelessWidget {
               ),
               SizedBox(height: 30),
               CustomText(
-                text: "People Detected: ${alert.detectedValue}",
+                text:
+                    "By: ${alert.source == 'Admin' || alert.source.startsWith('VOL') ? alert.source : 'System'}",
                 color: ClrUtils.textFourth,
                 fontWeight: FontWeight.w400,
                 letterSpacing: 0.3,
+              ),
+              SizedBox(height: 3),
+              CustomText(
+                text: "Action: ${alert.action}",
+                color: ClrUtils.textFourth,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 0.3,
+                overflow: TextOverflow.visible,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Flexible(
                     child: CustomText(
-                      text: "Action: take an action",
-                      color: ClrUtils.textFourth,
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 0.3,
+                      text:
+                          "${DateFormat('dd MMMM,  hh:mm:ss a').format(alert.timestamp.toDate())}",
+                      color: ClrUtils.icon,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
                       overflow: TextOverflow.visible,
                     ),
                   ),

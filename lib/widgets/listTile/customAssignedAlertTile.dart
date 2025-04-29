@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:vigilant_vision/constants/color_constants.dart';
 import 'package:vigilant_vision/models/alert.dart';
 import 'package:vigilant_vision/widgets/button/customButton.dart';
-import 'package:vigilant_vision/widgets/popup/alert_generation_popup.dart';
 import 'package:vigilant_vision/widgets/popup/confirmation_popup.dart';
 import 'package:vigilant_vision/widgets/text/customText.dart';
 
 class CustomAssignedAlertTile extends StatelessWidget {
   final Alert alert;
-  // final String title;
-  // final String alertClass;
-  // final int peopleDetected;
-  // final String action;
-  // final String status;
+  final String volId;
   final Color statusColor;
   final VoidCallback onPressed;
   final Color color;
@@ -30,11 +26,7 @@ class CustomAssignedAlertTile extends StatelessWidget {
   CustomAssignedAlertTile({
     super.key,
     required this.alert,
-    // required this.title,
-    // required this.alertClass,
-    // required this.peopleDetected,
-    // required this.action,
-    // required this.status,
+    required this.volId,
     required this.statusColor,
     required this.onPressed,
     required this.buttonText,
@@ -51,20 +43,20 @@ class CustomAssignedAlertTile extends StatelessWidget {
   });
 
   void showEditButtonPopup(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertGenerationPopup(
-          title: "Edit Alert",
-          //alert : alert,
-          location: alert.locationName,
-          alertClass: alert.alertType,
-          peopleDetected: alert.detectedValue,
-          action: "Take an action",
-          buttonText: "Done",
-        );
-      },
-    );
+    // showDialog(
+    //   context: context,
+    //   // builder: (BuildContext context) {
+    //   //   return AlertGenerationPopup(
+    //   //     title: "Edit Alert",
+    //   //     //alert : alert,
+    //   //     location: alert.locationName,
+    //   //     alertClass: alert.alertType,
+    //   //     peopleDetected: alert.detectedValue,
+    //   //     action: "Take an action",
+    //   //     buttonText: "Done",
+    //   //   );
+    //   // },
+    // );
   }
 
   void showConfirmationPopup(BuildContext context) {
@@ -74,10 +66,7 @@ class CustomAssignedAlertTile extends StatelessWidget {
         return ConfirmationPopup(
           text1: "Task Completed?",
           alert: alert,
-          // title: title,
-          // alertClass: alertClass,
-          // peopleDetected: peopleDetected,
-          // action: action,
+          volId: volId,
           text2: "No",
           text3: "Yes",
         );
@@ -158,16 +147,34 @@ class CustomAssignedAlertTile extends StatelessWidget {
               ),
               SizedBox(height: 30),
               CustomText(
+                text:
+                    "By: ${alert.source == 'Admin' || alert.source.startsWith('VOL') ? alert.source : 'System'}",
+                color: ClrUtils.textFourth,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 0.3,
+              ),
+              SizedBox(height: 3),
+              CustomText(
                 text: "People Detected: ${alert.detectedValue}",
                 color: ClrUtils.textFourth,
                 fontWeight: FontWeight.w400,
                 letterSpacing: 0.3,
               ),
+              SizedBox(height: 3),
               CustomText(
-                text: "Action: take an action",
+                text: "Action: ${alert.action}",
                 color: ClrUtils.textFourth,
                 fontWeight: FontWeight.w400,
                 letterSpacing: 0.3,
+              ),
+              SizedBox(height: 10),
+              CustomText(
+                text:
+                    "${DateFormat('dd MMMM,  hh:mm:ss a').format(alert.timestamp.toDate())}",
+                color: ClrUtils.icon,
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+                overflow: TextOverflow.visible,
               ),
               SizedBox(height: 15),
 
@@ -180,13 +187,13 @@ class CustomAssignedAlertTile extends StatelessWidget {
                     }),
 
               //used for create alerts screen
-              if (buttonText == "Edit" && alert.status != "resolved")
-                CustomButton(
-                    text: buttonText,
-                    icon: "assets/icon/edit.png",
-                    onPressed: () {
-                      showEditButtonPopup(context);
-                    }),
+              // if (buttonText == "Edit" && alert.status != "resolved")
+              //   CustomButton(
+              //       text: buttonText,
+              //       icon: "assets/icon/edit.png",
+              //       onPressed: () {
+              //         showEditButtonPopup(context);
+              //       }),
             ],
           ),
         ),

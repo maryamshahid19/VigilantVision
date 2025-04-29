@@ -5,28 +5,43 @@ import 'package:vigilant_vision/bloc/auth_state.dart';
 import 'package:vigilant_vision/constants/color_constants.dart';
 import 'package:vigilant_vision/constants/screensize_constants.dart';
 import 'package:vigilant_vision/models/user.dart';
-import 'package:vigilant_vision/repositories/auth_repository.dart';
+import 'package:vigilant_vision/repositories/alert_repository.dart';
+//import 'package:vigilant_vision/repositories/auth_repository.dart';
 import 'package:vigilant_vision/widgets/text/customText.dart';
-//import 'package:vigilant_vision/widgets/textfield/customTextfield.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({super.key, required this.user});
+
+  final UserModel user;
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late UserModel? user;
+  int taskCompleted = 0;
+  int taskGenerated = 0;
+  int taskOngoing = 0;
+
   @override
   void initState() {
     super.initState();
-    fetchCurrentUser();
+    fetchProfileAlertDetails();
   }
 
-  void fetchCurrentUser() async {
-    user = await AuthRepository().getCurrentUser();
-    setState(() {});
+  void fetchProfileAlertDetails() async {
+    int completedCount =
+        await AlertRepository().fetchTaskCompletedCount(widget.user.volID);
+    int generatedCount =
+        await AlertRepository().fetchTaskGeneratedCount(widget.user.volID);
+    int ongoingCount =
+        await AlertRepository().fetchTaskOngoingCount(widget.user.volID);
+
+    setState(() {
+      taskCompleted = completedCount;
+      taskGenerated = generatedCount;
+      taskOngoing = ongoingCount;
+    });
   }
 
   @override
@@ -53,54 +68,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(height: 40),
-                    // Profile Image
-                    // Stack(
-                    //   alignment: Alignment.bottomRight,
-                    //   children: [
-                    //     CircleAvatar(
-                    //       backgroundColor: ClrUtils.primary,
-                    //       radius: 50,
-                    //       child: ClipRRect(
-                    //         borderRadius: BorderRadius.circular(100),
-                    //         child: Image(
-                    //           image: AssetImage('assets/icon/pic.PNG'),
-                    //           height: 95,
-                    //           width: 95,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     Container(
-                    //       padding: const EdgeInsets.all(5),
-                    //       decoration: const BoxDecoration(
-                    //         color: Colors.white,
-                    //         shape: BoxShape.circle,
-                    //       ),
-                    //       child: const Icon(Icons.camera_alt,
-                    //           size: 20, color: Colors.blue),
-                    //     ),
-                    //   ],
-                    // ),
-                    const SizedBox(height: 10),
                     CustomText(
-                      text: user!.fullName,
+                      text: widget.user.fullName,
                       color: Colors.white,
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                     ),
-
                     CustomText(
                       text: "Volunteer",
                       color: Colors.white70,
                       fontSize: 16,
                     ),
-                    const SizedBox(height: 30),
-
+                    const SizedBox(height: 50),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          _buildStatItem("23", "Tasks Completed"),
+                          _buildStatItem("${taskCompleted}", "Tasks Completed"),
                           SizedBox(
                             height: 60,
                             width: 2,
@@ -108,7 +93,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               color: Colors.white70,
                             ),
                           ),
-                          _buildStatItem("09", "Tasks Generated"),
+                          _buildStatItem("${taskGenerated}", "Tasks Generated"),
                           SizedBox(
                             height: 60,
                             width: 2,
@@ -116,7 +101,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               color: Colors.white70,
                             ),
                           ),
-                          _buildStatItem("04", "Tasks Ongoing"),
+                          _buildStatItem("${taskOngoing}", "Tasks Ongoing"),
                         ],
                       ),
                     ),
@@ -156,7 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                       child: CustomText(
-                        text: user!.fullName,
+                        text: widget.user.fullName,
                         color: ClrUtils.textFifth,
                         fontWeight: FontWeight.w500,
                         letterSpacing: 0.3,
@@ -184,7 +169,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                       child: CustomText(
-                        text: user!.email,
+                        text: widget.user.email,
                         color: ClrUtils.textFifth,
                         fontWeight: FontWeight.w500,
                         letterSpacing: 0.3,
@@ -212,7 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                       child: CustomText(
-                        text: user!.phoneNo,
+                        text: widget.user.phoneNo,
                         color: ClrUtils.textFifth,
                         fontWeight: FontWeight.w500,
                         letterSpacing: 0.3,
@@ -240,7 +225,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                       child: CustomText(
-                        text: user!.volID,
+                        text: widget.user.volID,
                         color: ClrUtils.textFifth,
                         fontWeight: FontWeight.w500,
                         letterSpacing: 0.3,

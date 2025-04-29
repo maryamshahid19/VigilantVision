@@ -8,10 +8,7 @@ import 'package:vigilant_vision/widgets/text/customText.dart';
 
 class ConfirmationPopup extends StatelessWidget {
   Alert alert;
-  // final String title;
-  // final String alertClass;
-  // final int peopleDetected;
-  // final String action;
+  final String volId;
   final String text1;
   final String text2;
   final String text3;
@@ -19,10 +16,7 @@ class ConfirmationPopup extends StatelessWidget {
   ConfirmationPopup({
     super.key,
     required this.alert,
-    // required this.title,
-    // required this.alertClass,
-    // required this.peopleDetected,
-    // required this.action,
+    required this.volId,
     required this.text1,
     required this.text2,
     required this.text3,
@@ -54,7 +48,7 @@ class ConfirmationPopup extends StatelessWidget {
               height: 8,
             ),
             CustomText(
-              text: "Volunteering ${alert.locationName}",
+              text: "Volunteering at ${alert.locationName}",
               fontWeight: FontWeight.w600,
               fontSize: 16,
               letterSpacing: 0.3,
@@ -83,6 +77,14 @@ class ConfirmationPopup extends StatelessWidget {
             ),
             SizedBox(height: 20),
             CustomText(
+              text:
+                  "By: ${alert.source == 'Admin' || alert.source.startsWith('VOL') ? alert.assignedTo : 'System'}",
+              color: ClrUtils.textFourth,
+              fontWeight: FontWeight.w400,
+              letterSpacing: 0.3,
+            ),
+            SizedBox(height: 5),
+            CustomText(
               text: "People Detected: ${alert.detectedValue}",
               color: ClrUtils.textFourth,
               fontWeight: FontWeight.w400,
@@ -90,10 +92,11 @@ class ConfirmationPopup extends StatelessWidget {
             ),
             SizedBox(height: 5),
             CustomText(
-              text: "Action: take an action",
+              text: "Action: ${alert.action}",
               color: ClrUtils.textFourth,
               fontWeight: FontWeight.w400,
               letterSpacing: 0.3,
+              textAlign: TextAlign.center,
             ),
             SizedBox(height: 15),
             Row(
@@ -116,11 +119,13 @@ class ConfirmationPopup extends StatelessWidget {
                         onPressed: () {
                           if (text3 == 'Confirm') {
                             AlertRepository().updateAlertStatus(
-                                alert.documentId, "assigned");
+                                alert.documentId, "assigned", volId);
                           } else {
                             AlertRepository().updateAlertStatus(
-                                alert.documentId, "resolved");
+                                alert.documentId, "resolved", volId);
                           }
+
+                          Navigator.of(context).pop();
                         })),
               ],
             ),
