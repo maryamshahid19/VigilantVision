@@ -7,7 +7,7 @@ import 'package:vigilant_vision/widgets/button/customButton.dart';
 import 'package:vigilant_vision/widgets/text/customText.dart';
 
 class ConfirmationPopup extends StatelessWidget {
-  Alert alert;
+  final Alert alert;
   final String volId;
   final String text1;
   final String text2;

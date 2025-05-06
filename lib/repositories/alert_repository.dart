@@ -41,6 +41,16 @@ class AlertRepository {
     return alertData;
   }
 
+  Future<List<String>> fetchLocations() async {
+    final snapshot = await _db.collection('alerts').get();
+    final alertData = snapshot.docs
+        .map((doc) => doc['location_name'] as String)
+        .toSet()
+        .toList();
+
+    return alertData;
+  }
+
   Future<int> fetchTaskCompletedCount(String volId) async {
     final snapshot = await _db.collection('alerts').get();
 

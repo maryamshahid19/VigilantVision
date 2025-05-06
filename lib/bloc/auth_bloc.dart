@@ -45,12 +45,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc({required this.authRepository}) : super(AuthInitial()) {
     on<AppStarted>((event, emit) async {
-      final isLoggedIn = await authRepository.isLoggedIn();
-      if (isLoggedIn) {
-        emit(AuthAuthenticated());
-      } else {
-        emit(AuthInitial());
-      }
+      // final isLoggedIn = await authRepository.isLoggedIn();
+      // if (isLoggedIn) {
+      //   emit(AuthAuthenticated());
+      // } else {
+      emit(AuthInitial());
+      // }
     });
 
     on<SignUpRequested>((event, emit) async {

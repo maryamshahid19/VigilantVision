@@ -110,25 +110,22 @@ class _AlertsScreenState extends State<AlertsScreen> {
                           }).toList();
                         }
 
-                        return Expanded(
-                          child: ListView.builder(
-                            itemCount: alerts.length,
-                            itemBuilder: (context, index) {
-                              final alert = alerts[index];
+                        return ListView.builder(
+                          itemCount: alerts.length,
+                          itemBuilder: (context, index) {
+                            final alert = alerts[index];
 
-                              return CustomAlertListTile(
-                                alert: alert,
-                                volId: widget.volId,
-                                statusColor: alert.status == 'pending'
-                                    ? const Color.fromARGB(255, 240, 212, 2)
-                                    : (alert.status == 'assigned'
-                                        ? ClrUtils.tertiary
-                                        : const Color.fromARGB(
-                                            255, 22, 225, 29)),
-                                onPressed: () {},
-                              );
-                            },
-                          ),
+                            return CustomAlertListTile(
+                              alert: alert,
+                              volId: widget.volId,
+                              statusColor: alert.status == 'pending'
+                                  ? const Color.fromARGB(255, 240, 212, 2)
+                                  : (alert.status == 'assigned'
+                                      ? ClrUtils.tertiary
+                                      : const Color.fromARGB(255, 22, 225, 29)),
+                              onPressed: () {},
+                            );
+                          },
                         );
                       }),
                 ),

@@ -44,47 +44,44 @@ class _AssignedAlertsScreenState extends State<AssignedAlertsScreen> {
         child: Container(
           width: SizeCons.getWidth(context) * 0.9,
           height: SizeCons.getHeight(context),
-          child: Expanded(
-            child: RefreshIndicator(
-              onRefresh: _refreshAlerts,
-              child: FutureBuilder(
-                  future: AlertRepository().fetchAssignedAlerts(widget.volId),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
+          child: RefreshIndicator(
+            onRefresh: _refreshAlerts,
+            child: FutureBuilder(
+                future: AlertRepository().fetchAssignedAlerts(widget.volId),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-                    if (snapshot.hasError) {
-                      return Center(child: Text("Error: ${snapshot.error}"));
-                    }
+                  if (snapshot.hasError) {
+                    return Center(child: Text("Error: ${snapshot.error}"));
+                  }
 
-                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(
-                          child: Text('No alerts assigned yet.'));
-                    }
+                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(child: Text('No alerts assigned yet.'));
+                  }
 
-                    List<Alert> alerts = snapshot.data!;
+                  List<Alert> alerts = snapshot.data!;
 
-                    return ListView.builder(
-                      itemCount: alerts.length,
-                      itemBuilder: (context, index) {
-                        final alert = alerts[index];
+                  return ListView.builder(
+                    itemCount: alerts.length,
+                    itemBuilder: (context, index) {
+                      final alert = alerts[index];
 
-                        return CustomAssignedAlertTile(
-                          alert: alert,
-                          volId: widget.volId,
-                          statusColor: alert.status == 'pending'
-                              ? const Color.fromARGB(255, 240, 212, 2)
-                              : (alert.status == 'assigned'
-                                  ? ClrUtils.tertiary
-                                  : const Color.fromARGB(255, 22, 225, 29)),
-                          buttonText: "Completed",
-                          onPressed: () {},
-                        );
-                      },
-                    );
-                  }),
-            ),
+                      return CustomAssignedAlertTile(
+                        alert: alert,
+                        volId: widget.volId,
+                        statusColor: alert.status == 'pending'
+                            ? const Color.fromARGB(255, 240, 212, 2)
+                            : (alert.status == 'assigned'
+                                ? ClrUtils.tertiary
+                                : const Color.fromARGB(255, 22, 225, 29)),
+                        buttonText: "Completed",
+                        onPressed: () {},
+                      );
+                    },
+                  );
+                }),
           ),
         ),
       ),

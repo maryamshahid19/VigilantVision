@@ -3,13 +3,12 @@ import 'package:intl/intl.dart';
 import 'package:vigilant_vision/constants/color_constants.dart';
 import 'package:vigilant_vision/constants/screensize_constants.dart';
 import 'package:vigilant_vision/models/alert.dart';
-import 'package:vigilant_vision/repositories/alert_repository.dart';
 import 'package:vigilant_vision/widgets/button/customButton.dart';
 import 'package:vigilant_vision/widgets/popup/confirmation_popup.dart';
 import 'package:vigilant_vision/widgets/text/customText.dart';
 
 class AlertInfoPopup extends StatefulWidget {
-  Alert alert;
+  final Alert alert;
   final String volId;
   final Color statusColor;
 

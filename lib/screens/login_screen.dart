@@ -115,48 +115,48 @@ class _LogInScreenState extends State<LogInScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CustomButton(
-                          text: 'Continue with Google',
-                          onPressed: () {},
-                          borderColor: ClrUtils.border,
-                          fontWeight: FontWeight.w600,
-                          color: ClrUtils.primary,
-                          textColor: ClrUtils.textPrimary,
-                          icon: "assets/icon/google.png",
-                        ),
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: SizedBox(
-                                  height: 2,
-                                  child: ColoredBox(
-                                    color: ClrUtils.border,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(20),
-                                child: CustomText(
-                                  text: "Or Login With",
-                                  color: ClrUtils.textSecondary,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              Expanded(
-                                child: SizedBox(
-                                  height: 2,
-                                  child: ColoredBox(
-                                    color: ClrUtils.border,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        // CustomButton(
+                        //   text: 'Continue with Google',
+                        //   onPressed: () {},
+                        //   borderColor: ClrUtils.border,
+                        //   fontWeight: FontWeight.w600,
+                        //   color: ClrUtils.primary,
+                        //   textColor: ClrUtils.textPrimary,
+                        //   icon: "assets/icon/google.png",
+                        // ),
+                        // Container(
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        //     crossAxisAlignment: CrossAxisAlignment.center,
+                        //     children: [
+                        //       Expanded(
+                        //         child: SizedBox(
+                        //           height: 2,
+                        //           child: ColoredBox(
+                        //             color: ClrUtils.border,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //       Padding(
+                        //         padding: EdgeInsets.all(20),
+                        //         child: CustomText(
+                        //           text: "Or Login With",
+                        //           color: ClrUtils.textSecondary,
+                        //           fontSize: 12,
+                        //           fontWeight: FontWeight.w400,
+                        //         ),
+                        //       ),
+                        //       Expanded(
+                        //         child: SizedBox(
+                        //           height: 2,
+                        //           child: ColoredBox(
+                        //             color: ClrUtils.border,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                         CustomTextField(
                           controller: emailController,
                           hintText: "abc@gmail.com",

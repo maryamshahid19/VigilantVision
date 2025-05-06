@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vigilant_vision/constants/color_constants.dart';
 import 'package:vigilant_vision/constants/screensize_constants.dart';
-import 'package:vigilant_vision/models/alert.dart';
 import 'package:vigilant_vision/repositories/alert_repository.dart';
 import 'package:vigilant_vision/widgets/button/customButton.dart';
 import 'package:vigilant_vision/widgets/text/customText.dart';
@@ -10,7 +9,6 @@ import 'package:vigilant_vision/widgets/textfield/customTextfield.dart';
 class AlertGenerationPopup extends StatefulWidget {
   const AlertGenerationPopup(
       {super.key,
-      //required this.alert,
       required this.volId,
       required this.title,
       this.location,
@@ -19,7 +17,6 @@ class AlertGenerationPopup extends StatefulWidget {
       this.action,
       required this.buttonText});
 
-  //final Alert? alert;
   final String volId;
   final String title;
   final String? location;
@@ -43,10 +40,11 @@ class _AlertGenerationPopupState extends State<AlertGenerationPopup> {
   String? selectedClass;
   bool isCustomLocation = false;
 
-  final List<String> locationOptions = ["LocationA", "LocationB", "Other"];
+  List<String> locationOptions = [];
   final List<String> classOptions = [
     "Crowd",
-    "Smoke",
+    "Suspicious Activity"
+        "Smoke",
     "Queue",
     "Masks",
     "General"
@@ -56,22 +54,7 @@ class _AlertGenerationPopupState extends State<AlertGenerationPopup> {
   void initState() {
     super.initState();
 
-    // if (widget.location != null &&
-    //     //if (
-    //     locationOptions.contains(widget.location)) {
-    //   selectedLocation = widget.location;
-    //   isCustomLocation = false;
-    // } else {
-    //   selectedLocation = "Other";
-    //  isCustomLocation = true;
-    //   customLocationController.text =
-    //       widget.location ?? ""; // Store custom location
-    // }
-
-    // selectedClass = widget.alertClass;
-    // peopleDetectedController =
-    //     TextEditingController(text: widget.peopleDetected?.toString() ?? "");
-    // alertActionController = TextEditingController(text: widget.action ?? "");
+    fetchAlertsLocation();
 
     if (widget.location != null) {
       if (locationOptions.contains(widget.location)) {
@@ -86,6 +69,12 @@ class _AlertGenerationPopupState extends State<AlertGenerationPopup> {
       selectedLocation = null;
       isCustomLocation = false;
     }
+  }
+
+  void fetchAlertsLocation() async {
+    locationOptions = await AlertRepository().fetchLocations();
+    locationOptions.add('Other');
+    setState(() {});
   }
 
   @override
