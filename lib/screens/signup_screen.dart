@@ -180,32 +180,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         CustomTextField(
                           controller: phoneController,
                           hintText: "0308768456",
+                          keyboardType: TextInputType.numberWithOptions(),
                           maxline: 1,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  Checkbox(
-                                    value: false,
-                                    onChanged: (obj) {},
-                                    activeColor: ClrUtils.textTertiary,
-                                  ),
-                                  CustomText(
-                                    text: "Remember me",
-                                    color: ClrUtils.textSecondary,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            // CustomTextButton(
-                            //     text: "Forgot Password?", onpressed: () {}),
-                          ],
-                        ),
+                        SizedBox(height: 20),
                         CustomButton(
                           text: "SignUp",
                           onPressed: () {
@@ -228,57 +206,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     phoneNo: phoneController.text.trim(),
                                   ),
                                 );
-
-                            // Navigator.pushReplacement(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => LogInScreen(),
-                            //   ),
-                            // );
                           },
                         ),
-                        // Container(
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        //     crossAxisAlignment: CrossAxisAlignment.center,
-                        //     children: [
-                        //       Expanded(
-                        //         child: SizedBox(
-                        //           height: 2,
-                        //           child: ColoredBox(
-                        //             color: ClrUtils.border,
-                        //           ),
-                        //         ),
-                        //       ),
-                        //       Padding(
-                        //         padding: EdgeInsets.all(20),
-                        //         child: CustomText(
-                        //           text: "Or",
-                        //           color: ClrUtils.textSecondary,
-                        //           fontSize: 12,
-                        //           fontWeight: FontWeight.w400,
-                        //         ),
-                        //       ),
-                        //       Expanded(
-                        //         child: SizedBox(
-                        //           height: 2,
-                        //           child: ColoredBox(
-                        //             color: ClrUtils.border,
-                        //           ),
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                        // CustomButton(
-                        //   text: 'Continue with Google',
-                        //   onPressed: () {},
-                        //   borderColor: ClrUtils.border,
-                        //   fontWeight: FontWeight.w600,
-                        //   color: ClrUtils.primary,
-                        //   textColor: ClrUtils.textPrimary,
-                        //   icon: "assets/icon/google.png",
-                        // ),
                       ],
                     ),
                   ),

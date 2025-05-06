@@ -56,7 +56,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   void initState() {
     super.initState();
-    _isObscured = widget.obscureText;
+    _isObscured = !widget.obscureText;
   }
 
   void _togglePasswordVisibility() {
