@@ -6,6 +6,8 @@ import 'package:vigilant_vision/constants/color_constants.dart';
 import 'package:vigilant_vision/constants/screensize_constants.dart';
 import 'package:vigilant_vision/models/user.dart';
 import 'package:vigilant_vision/repositories/alert_repository.dart';
+import 'package:vigilant_vision/repositories/auth_repository.dart';
+import 'package:vigilant_vision/screens/login_screen.dart';
 //import 'package:vigilant_vision/repositories/auth_repository.dart';
 import 'package:vigilant_vision/widgets/text/customText.dart';
 
@@ -58,6 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Container(
                 height: SizeCons.getHeight(context) * 0.4,
                 width: SizeCons.getWidth(context),
+                padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
                 decoration: BoxDecoration(
                   color: ClrUtils.secondary,
                   borderRadius: BorderRadius.only(
@@ -67,7 +70,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 40),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              AuthRepository().logOut();
+
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => LogInScreen()));
+                            });
+                          },
+                          icon: Icon(
+                            Icons.logout_rounded,
+                            color: ClrUtils.primary,
+                          )),
+                    ),
+                    const SizedBox(height: 10),
                     CustomText(
                       text: widget.user.fullName,
                       color: Colors.white,
@@ -79,7 +100,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       color: Colors.white70,
                       fontSize: 16,
                     ),
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 40),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Row(

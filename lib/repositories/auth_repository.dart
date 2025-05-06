@@ -69,6 +69,8 @@ class AuthRepository {
     // Remove login state
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isLoggedIn', false);
+
+    print("Logged out");
   }
 
   Future<bool> isLoggedIn() async {

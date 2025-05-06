@@ -33,7 +33,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         listener: (context, state) {
           if (state is AuthAuthenticated) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Signup successful!")),
+              SnackBar(content: Text("Successful!")),
             );
             Navigator.pushReplacement(
               context,
